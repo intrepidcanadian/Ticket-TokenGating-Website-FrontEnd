@@ -1,0 +1,21 @@
+@use "../../styles/partials/font" as *;
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
+.footer {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
+    &__copyright {
+       color: $cloud;
+      @include Mp__body-medium;
+      
+        @include tablet {
+        font-size: .875rem;
+        line-height: 1.375rem;
+        }
+    }
+}

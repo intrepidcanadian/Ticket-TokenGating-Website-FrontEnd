@@ -1,15 +1,20 @@
-
 import './App.css';
-import WalletConnect from './components/WalletConnect';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App() {
+import HomePage from "./pages/HomePage/HomePage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+
+
+
+export default function App() {
   return (
-    <div>
-
-    <WalletConnect />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
 
-export default App;
+}
