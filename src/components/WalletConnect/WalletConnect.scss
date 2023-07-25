@@ -3,126 +3,52 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 
-
-.appbody {
-  background-color: $white;
-  margin-top: -4.875rem;
-  width: 90%;
-  padding: 1rem;
-  border-radius: 0.1875rem;
-  margin-left: 2rem;
-
-  @include tablet {
-    width: 90%;
-    margin: auto;
-    margin-top: -5.875rem;
-    padding-right: 2.5rem;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-
-  @include desktop {
-    margin-top: -5.875rem;
-    width: 80%;
+  to {
+    transform: rotate(360deg);
   }
+}
 
-  &__header {
-    width: 100%;
-    border-bottom: 1px solid $cloud;
-    margin: 1rem;
-    padding-right: 2rem;
+.wallet__container {
 
-    @include tablet {
-      width: 97%;
-      padding-right: 1rem;
-      display: flex;
-      align-items: center;
-    }
+  border-radius: 10px;
+  align-items: center;
+  display: flex;
 
-    @include desktop {
-      width: 100%;
-      padding-top: 0rem;
-    }
-  }
+  &--address {
+    color: white;
 
-  &__title {
-    width: 100%;
-    padding: 0rem 10.56rem 0rem 1.5rem;
-    @include h1__M-header;
-
-    @include tablet {
-      padding: 2rem 6.25rem 0rem 1.5rem;
-      margin-bottom: 2rem;
-      @include h1__DT-header;
-    }
-
-    @include desktop {
-      padding: 0rem 19.44rem 0rem 1.5rem;
-    }
-  }
-
-
-  &__status {
-    padding-left: 1.5rem;
-
-
-    &--address {
-
-      font-weight: bold;
-
-    }
+    &:hover{
+      text-decoration: underline;
+        }
   }
 
 }
 
-  .main {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem;
-  }
 
-  .footer {
-    display: flex;
-    padding: 2rem 0;
-    border-top: 1px solid #eaeaea;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .image {
-    width: 70%;
-    height: 50%;
-    margin-left: 20%;
-  }
+.spinner__container {
 
-  .title {
-    font-size: 2rem;
-    margin: 2rem 0;
-  }
+  padding: 1rem;
+}
 
-  .description {
-    line-height: 1;
-    margin: 2rem 0;
-    font-size: 1.2rem;
-  }
+.icon {
+  height:2rem;
+    animation: spin 2s linear infinite; 
+}
 
-  .button {
-    border-radius: 4px;
-    background-color: blue;
-    border: none;
-    color: #ffffff;
-    font-size: 15px;
-    padding: 20px;
-    width: 200px;
-    cursor: pointer;
-    margin-bottom: 2%;
-  }
 
-  @media (max-width: 1000px) {
-    .main {
-      width: 100%;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-  }
+
+.button {
+  border-radius: 8px;
+  background-color: black;
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  padding: 20px;
+  cursor: pointer;
+  margin-bottom: 2%;
+}

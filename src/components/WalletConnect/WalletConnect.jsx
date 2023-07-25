@@ -1,33 +1,163 @@
 import React, { useState, useEffect, useRef } from "react";
 import Web3Modal from "web3modal";
 import "../WalletConnect/WalletConnect.scss"
+import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
+// import { Contract } from "ethers";
+
+// import assets
+import spinner from "../../assets/Logo/spinner.jpeg";
 
 const ethers = require("ethers")
 
 function WalletConnect() {
   const [walletConnected, setWalletConnected] = useState(false);
-  const [userAddress, setUserAddress] = useState("")
-  const [chainId, setChainId] = useState("")
+  const [userAddress, setUserAddress] = useState(null);
+  const [chainId, setChainId] = useState("");
   const web3ModalRef = useRef();
+
+  const [isOwner, setIsOwner] = useState(false);
+  const [presaleStarted, setPresaleStarted] = useState(false);
+  const [presaleEnded, setPresaleEnded] = useState(false);
+
+  // // Make it so only the owner can start the contract
+  // const getOwner = async () => {
+  //   try {
+  //     const signer = await getProviderOrSigner();
+
+  //     const nftContract = new Contract(
+  //       NFT_CONTRACT_ADDRESS,
+  //       NFT_CONTRACT_ABI,
+  //       signer
+  //     );
+
+  //     // compares owner of the contract address and the useraddress to render a button for owner
+  //     const owner = await nftContract.owner();
+  //     const userAddress = await signer.getAddress();
+
+  //     if (owner.toLowerCase() === userAddress.toLowerCase()) {
+  //       setIsOwner(true);
+  //       // Owner is connected to website, to render a button for Owner
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const checkIfOwner = async () => {
+  //   try {
+  //     const signer = await getProviderOrSigner();
+  //     const nftContract = new Contract(
+  //       NFT_CONTRACT_ADDRESS,
+  //       NFT_CONTRACT_ABI,
+  //       signer
+  //     );
+
+  //     const owner = await nftContract.owner();
+  //     const userAddress = await signer.getAddress();
+
+  //     if (owner.toLowerCase() === userAddress.toLowerCase()) {
+  //       setIsOwner(true);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+
+  // //callable only by owner of the contract
+
+  // const startPreSale = async () => {
+
+  //   try {
+  //     const signer = await getProviderOrSigner(true);
+  //     const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+  //     const txn = await nftContract.startPresale();
+  //     await txn.wait();
+
+  //     setPresaleStarted(true);
+
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const checkifPresaleStarted = async () => {
+  //   try {
+  //     const provider = await getProviderOrSigner()
+  //     const nftContract = new Contract(
+  //       NFT_CONTRACT_ABI,
+  //       NFT_CONTRACT_ADDRESS,
+  //       provider
+  //     );
+
+  //     const isPresaleStarted = await nftContract.presaleStarted();
+  //     setPresaleStarted(isPresaleStarted);
+
+  //     return isPresaleStarted;
+
+  //   } catch (error) {
+  //     console.error(error);
+  //     return false;
+  //   }
+  // };
+
+  // const checkifPresaleEnded = async () => {
+  //   try {
+
+  //     const provider = await getProviderOrSigner()
+  //     const nftContract = new Contract(
+  //       NFT_CONTRACT_ADDRESS,
+  //       NFT_CONTRACT_ABI,
+  //       provider
+  //     );
+
+  //     // THis will require a big number because of UIN256
+  //     const presaleEndTime = await nftContract.presaleEnded();
+  //     const currentTimeInSeconds = Date.now() / 1000;
+
+  //     // this is true or false test. Ending is True if current time has passed the presale end time.
+  //     const hasPresaleEnded = presaleEndTime.lt(
+  //       Math.floor(currentTimeInSeconds)
+  //     );
+
+  //     setPresaleEnded(hasPresaleEnded)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+
+  // }
+
+
+  // const onPageLoad = async () => {
+  //   await connectWallet();
+  //   const presaleStarted = await checkifPresaleStarted();
+  //   if (presaleStarted) {
+  //     await checkifPresaleEnded();
+  //   }
+
+  // }
+
 
   const connectWallet = async () => {
 
     try {
-      setWalletConnected(true);
+
       let web3Provider = await getProviderOrSigner();
-
       const accounts = await web3Provider.listAccounts();
-      if (accounts.length > 0) {
-        const userAddress = accounts[0];
-        console.log("Wallet Address:", userAddress);
-      }
 
+      if (accounts.length > 0) {
+        const connecteduserAddress = accounts[0].address;
+        setWalletConnected(true)
+        setUserAddress(connecteduserAddress)
+        console.log("Wallet Address:", connecteduserAddress);
+      }
 
     } catch (error) {
 
       if (error.message === "User Rejected") {
-        // User rejected the connection request, handle it gracefully
+        // User rejected the connection request - probably disconnected Metamask
         setWalletConnected(false);
+
       } else {
         // Other errors, handle them accordingly
         console.error("Error connecting wallet:", error);
@@ -70,9 +200,13 @@ function WalletConnect() {
         disableInjectedProvider: false,
       });
 
-      // Check if the wallet is already connected
+      // If the wallet is not connected or false, then it does connectwallet function and also if the presale is ended
+      // This will display either the presale function or sale function. To add the presale function
       if (!walletConnected) {
+
         connectWallet();
+        // onPageLoad();
+
       } else {
 
         // If the wallet is already connected, log the wallet address again
@@ -80,11 +214,12 @@ function WalletConnect() {
           .then((web3Provider) => web3Provider.listAccounts())
           .then((accounts) => {
             if (accounts.length > 0) {
-              let userAddress = accounts[0].address;
+              const connecteduserAddress = accounts[0].address;
               let chainId = accounts[0].chainId;
-              setUserAddress(userAddress)
+              setUserAddress(connecteduserAddress)
               setChainId(chainId)
-              console.log("Wallet Address (Already Connected):", userAddress);
+              setWalletConnected(true)
+              console.log("Wallet Address (Already Connected):", connecteduserAddress);
             } else {
               console.warn("No accounts found in the wallet.");
             }
@@ -96,33 +231,43 @@ function WalletConnect() {
     };
 
     initWeb3Modal();
-  }, [walletConnected]);
+
+  }, [walletConnected, userAddress]);
+
+  function renderBody() {
+    console.log("walletConnected:", walletConnected);
+    console.log("userAddress:", userAddress);
+
+    if (!walletConnected) {
+      return (
+        <button onClick={connectWallet} className="button">
+          Connect to Your Wallet Through Metamask
+        </button>
+      );
+    } else if (!!userAddress && walletConnected) {
+
+      return (
+        <div className="wallet__container">
+          <div className = "spinner__container">
+          <img className="icon" src={spinner} alt="Spinner" />
+          </div>
+          <span className="wallet__container--address"> {userAddress.slice(0, 5)}...{userAddress.slice(-3)}
+          </span>
+        </div>
+      );
+    } else {
+      console.log(!!userAddress)
+      console.log(walletConnected)
+      return "Loading";
+    }
+  }
+
 
   return (
-    <div>
-      <div className="appbody">
-        <div className='appbody__header'>
-          <h1 className='appbody__title'>
-            Conflux E-Commerce NFT Project
-          </h1>
-        </div>
-        <p className="appbody__status">
-          {walletConnected ?
-            <>
-              You are connected to Chain {chainId}. Your Conflux Testnet Address is 
-              <span className="appbody__status--address"> {userAddress.slice(0, 5)}...{userAddress.slice(-3)} 
-              </span>
-            </>
-            : `"Not Connected"`}
-        </p>
-        <div className="main">
-          {walletConnected ? null : (
-            <button onClick={connectWallet} className="button">
-              Connect to Conflux TestNet
-            </button>
-          )}
-        </div>
-      </div>
+    <div className="wallet__container">
+      <p>
+        {renderBody()}
+      </p>
     </div>
   );
 }

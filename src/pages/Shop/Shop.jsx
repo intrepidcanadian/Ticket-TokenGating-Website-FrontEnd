@@ -1,19 +1,22 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer"
-import WalletConnect from "../../components/WalletConnect/WalletConnect";
+import React, {useState} from "react";
+import './Shop.scss'
 
-export default function NotFoundPage() {
+
+export default function Shop() {
+
     return (
         <div>
             <Header />
             <div className="appbody">
                 <div className='appbody__header'>
                     <h1 className='appbody__title'>
-                    In Development
+                        Shop
                     </h1>
                 </div>
             </div>
-                <Footer />
-            </div>
-            )
+            <Footer />
+        </div>
+    )
 }

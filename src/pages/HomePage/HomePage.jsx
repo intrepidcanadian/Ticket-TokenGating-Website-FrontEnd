@@ -1,17 +1,22 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer"
-import WalletConnect from "../../components/WalletConnect/WalletConnect";
 import React, {useState} from "react";
+import './HomePage.scss'
+
+
 
 export default function HomePage() {
-
-    const [connection, setConnection] = useState(false);
-
 
     return (
         <div>
             <Header />
-            <WalletConnect  setConnection={setConnection} />
+            <div className="appbody">
+                <div className='appbody__header'>
+                    <h1 className='appbody__title'>
+                        Token-Gating NFT Project
+                    </h1>
+                </div>
+            </div>
             <Footer />
         </div>
     )
