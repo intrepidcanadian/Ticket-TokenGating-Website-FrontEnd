@@ -10,13 +10,13 @@ import Shop from './pages/Shop/Shop';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/mint-token" element={<MintYourToken />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+     <BrowserRouter>
+       <Routes>
+         <Route path="/" element={<HomePage />} />
+         <Route path="/mint-token" element={<MintYourToken />} />
+         <Route path="/shop" element={<Shop />} />
+         <Route path="*" element={<NotFoundPage />} />
+       </Routes>
     </BrowserRouter>
   );
 

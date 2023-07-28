@@ -14,8 +14,10 @@ export default function Shop() {
                     <h1 className='appbody__title'>
                         Shop
                     </h1>
+                
                 </div>
             </div>
+
             <Footer />
         </div>
     )
