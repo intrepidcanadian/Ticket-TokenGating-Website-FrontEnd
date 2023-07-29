@@ -2,12 +2,21 @@ import "./Header.scss";
 import WalletConnect from "../WalletConnect/WalletConnect";
 
 // Dependnancies
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate  } from "react-router-dom";
 
 // Assets
 import logo from "../../assets/Logo/community.svg";
 
 export default function Header() {
+
+  const navigate = useNavigate ();
+
+  const handleNavLinkClick = (path) => {
+    navigate(path);
+  };
+
+
+
   return (
     <header className="header">
       <div className="header__logo-container">
@@ -15,7 +24,7 @@ export default function Header() {
           to="/"
           className="no_underline"
         >
-          <img className = "header__logo" src={logo} alt="Conflux Logo" />
+          <img className = "header__logo" src={logo} alt="Logo" />
         </NavLink>
       </div>
       <div className="header__links">
@@ -23,6 +32,7 @@ export default function Header() {
           <NavLink
             to="/"
             className="header__link"
+            onClick={() => handleNavLinkClick("/")}
           >
             Home
           </NavLink>
@@ -31,6 +41,7 @@ export default function Header() {
           <NavLink
             to="/mint"
             className="header__link"
+            onClick={() => handleNavLinkClick("/mint")}
           >
             Build Your Community
           </NavLink>
@@ -39,6 +50,7 @@ export default function Header() {
           <NavLink
             to="/shop"
             className="header__link"
+            onClick={() => handleNavLinkClick("/shop")}
           >
             Shop Products
           </NavLink>

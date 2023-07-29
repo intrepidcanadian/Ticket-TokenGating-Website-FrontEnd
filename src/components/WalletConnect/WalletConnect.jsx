@@ -8,141 +8,12 @@ import { Contract } from "ethers";
 import spinner from "../../assets/Logo/spinner.jpeg";
 
 const ethers = require("ethers")
-const {Conflux} = require('js-conflux-sdk');
-const confluxRPC = "https://evmtestnet.confluxrpc.com";
 
 function WalletConnect() {
+
   const [walletConnected, setWalletConnected] = useState(false);
   const [userAddress, setUserAddress] = useState(null);
-  const [chainId, setChainId] = useState("");
   const web3ModalRef = useRef();
-
-  const [isOwner, setIsOwner] = useState(false);
-  const [presaleStarted, setPresaleStarted] = useState(false);
-  const [presaleEnded, setPresaleEnded] = useState(false);
-
-  // async function main() {
-  //   let conflux = new Conflux({
-  //     url: 'https://evmtestnet.confluxrpc.com',
-  //     logger: console,
-  //     networkId: 71,
-  //   });
-  
-  //   let balance = await conflux.getBalance('0x8DabF51501196a7700c97616bD82791cF31Ac685');
-  //   console.log("balance: ", balance);
-  // }
-
-  // main();
-
-
-  // async function ethmain() {
-  // const jsonRpcUrl = 'https://evmtestnet.confluxrpc.com';
-  
-  //   let ethprovider = await ethers.providers.JsonRpcProvider(jsonRpcUrl);
-  //   console.log("balance: ", balance);
-  // }
-
-  // ethmain();
-
-  
-  // Make it so only the owner can start the contract
-  const getOwner = async () => {
-    try {
-      const signer = await getProviderOrSigner();
-      console.log(signer)
-
-      const nftContract = new Contract(
-        NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_ABI,
-        signer
-      );
-
-      // compares owner of the contract address and the useraddress to render a button for owner
-      const owner = await nftContract.owner();
-      const userAddress = await signer.getAddress();
-      console.log(owner)
-      console.log(userAddress)
-
-      if (owner.toLowerCase() === userAddress.toLowerCase()) {
-        setIsOwner(true);
-
-        // Owner is connected to website, to render a button for Owner
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  //callable only by owner of the contract
-
-  const startPreSale = async () => {
-
-    try {
-      const signer = await getProviderOrSigner(true);
-      console.log(signer)
-      const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
-      const txn = await nftContract.startPresale();
-      await txn.wait();
-
-      setPresaleStarted(true);
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const checkifPresaleStarted = async () => {
-    try {
-      const provider = await getProviderOrSigner()
-      const nftContract = new Contract(
-        NFT_CONTRACT_ABI,
-        NFT_CONTRACT_ADDRESS,
-        provider
-      );
-
-      const isPresaleStarted = await nftContract.presaleStarted();
-      setPresaleStarted(isPresaleStarted);
-
-      return isPresaleStarted;
-
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
-
-  const checkifPresaleEnded = async () => {
-    try {
-
-      const provider = await getProviderOrSigner()
-      const nftContract = new Contract(
-        NFT_CONTRACT_ADDRESS,
-        NFT_CONTRACT_ABI,
-        provider
-      );
-
-      // THis will require a big number because of UIN256
-      const presaleEndTime = await nftContract.presaleEnded();
-      const currentTimeInSeconds = Date.now() / 1000;
-
-      // this is true or false test. Ending is True if current time has passed the presale end time.
-      const hasPresaleEnded = presaleEndTime.lt(
-        Math.floor(currentTimeInSeconds)
-      );
-
-      setPresaleEnded(hasPresaleEnded)
-    } catch (error) {
-      console.error(error)
-    }
-
-  }
-  const onPageLoad = async () => {
-    await connectWallet();
-    const presaleStarted = await checkifPresaleStarted();
-    if (presaleStarted) {
-      await checkifPresaleEnded();
-    }
-  }
 
   function renderBody() {
     console.log("walletConnected:", walletConnected);
@@ -172,55 +43,14 @@ function WalletConnect() {
     }
   }
 
-  function buttonAvailability() {
-
-    if (!walletConnected) {
-      console.log(!walletConnected)
-      return (
-        console.log("Wallet is not connected for Pre-Sale")
-      );
-    }
-
-    if (isOwner && !presaleStarted) {
-      // render a button to start the presale
-      console.log(isOwner)
-      return (
-        <button onClick={startPreSale} className="button">
-          Start the Pre-Sale
-        </button>
-      )
-
-    } 
-
-    if (!presaleStarted) {
-      console.log(!presaleStarted)
-      // just say presale hasn't started yet, come back later
-    }
-
-    if (presaleStarted && !presaleEnded) {
-      console.log(!presaleStarted)
-      console.log(!presaleEnded)
-
-      // allow users to mint in presale
-    }
-
-    if (presaleEnded) {
-      console.log(presaleEnded)
-
-      // allow users to take part in public sale
-    }
-
-    return null;
-  }
-
-
-
   const connectWallet = async () => {
 
     try {
 
       let web3Provider = await getProviderOrSigner();
       const accounts = await web3Provider.listAccounts();
+
+      console.log(accounts)
 
       if (accounts.length > 0) {
         const connecteduserAddress = accounts[0].address;
@@ -245,18 +75,22 @@ function WalletConnect() {
   const getProviderOrSigner = async (needSigner = false) => {
     // We need to gain access to provider/signer from Metamask
     const provider = await web3ModalRef.current.connect();
-    console.log(provider);
-
     const web3Provider = new ethers.BrowserProvider(provider);
+
     console.log(web3Provider);
     // let balance = await utils.formatEther(web3Provider.getBalance("0x8DabF51501196a7700c97616bD82791cF31Ac685"))
     // console.log(balance)
     let balance2 = await web3Provider.getBalance("0x8DabF51501196a7700c97616bD82791cF31Ac685")
     let balance3 = ethers.formatEther(balance2)
+    let network1 = await web3Provider.getNetwork(provider)
+    let signer1 = await web3Provider.getSigner()
+    // let example = await ethers.provider.getNetwork
     console.log(balance2)
     console.log(balance3)
+    console.log(network1)
+    console.log(signer1)
+    // console.log(example)
 
-    // Update wallet connected to be true
     const { chainId, ensAddress, name } = await web3Provider.getNetwork();
 
     console.log("Current Chain ID:", chainId, ensAddress, name);
@@ -271,6 +105,7 @@ function WalletConnect() {
 
     if (needSigner) {
       const signer = web3Provider.getSigner();
+      console.log(signer)
 
       return signer;
     }
@@ -280,11 +115,6 @@ function WalletConnect() {
 
   };
 
-  useEffect(() => {
-    if (walletConnected && userAddress) {
-      getOwner();
-    }
-  }, [walletConnected, userAddress]);
 
   useEffect(() => {
     const initWeb3Modal = async () => {
@@ -308,10 +138,9 @@ function WalletConnect() {
           .then((accounts) => {
             if (accounts.length > 0) {
               const connecteduserAddress = accounts[0].address;
-              let chainId = accounts[0].chainId;
-              setUserAddress(connecteduserAddress)
-              setChainId(chainId)
-              setWalletConnected(true)
+              // const chainId = accounts[0].provider.network.chainId
+              // let chainIdNetwork = accounts[0].network.chainId;
+
               console.log("Wallet Address (Already Connected):", connecteduserAddress);
             } else {
               console.warn("No accounts found in the wallet.");
@@ -330,11 +159,10 @@ function WalletConnect() {
 
   return (
     <>
-      <p>{renderBody()}</p>
-      <p>{buttonAvailability()}</p>
+      {renderBody()}
     </>
+
   );
-  
 
 }
 
