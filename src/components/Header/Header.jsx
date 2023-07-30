@@ -3,6 +3,7 @@ import WalletConnect from "../WalletConnect/WalletConnect";
 
 // Dependnancies
 import { NavLink, useNavigate  } from "react-router-dom";
+import {useState} from "react";
 
 // Assets
 import logo from "../../assets/Logo/community.svg";
@@ -13,9 +14,7 @@ export default function Header() {
 
   const handleNavLinkClick = (path) => {
     navigate(path);
-  };
-
-
+    };
 
   return (
     <header className="header">

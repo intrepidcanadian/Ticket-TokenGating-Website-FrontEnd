@@ -13,7 +13,7 @@ export default function App() {
      <BrowserRouter>
        <Routes>
          <Route path="/" element={<HomePage reloadPage={forcePageReload} />} />
-         <Route path="/mint" element={<MintYourToken reloadPage={forcePageReload}  />} />
+         <Route path="/mint" element={<MintYourToken />} />
          <Route path="/shop" element={<Shop reloadPage={forcePageReload} />} />
          <Route path="*" element={<NotFoundPage />} />
        </Routes>

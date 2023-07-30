@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Web3Modal from "web3modal";
 import "../WalletConnect/WalletConnect.scss"
-import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
-import { Contract } from "ethers";
 
 // import assets
 import spinner from "../../assets/Logo/spinner.jpeg";
