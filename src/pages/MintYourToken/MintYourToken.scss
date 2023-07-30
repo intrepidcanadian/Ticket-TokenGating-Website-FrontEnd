@@ -19,6 +19,7 @@
     padding-right: 2.5rem;
   }
 
+  
   @include desktop {
     margin-top: -5.875rem;
     width: 80%;
@@ -27,6 +28,25 @@
   &__header {
     width: 100%;
     border-bottom: 1px solid $cloud;
+    margin: 1rem;
+    padding-right: 2rem;
+
+    @include tablet {
+      width: 97%;
+      padding-right: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    @include desktop {
+      width: 100%;
+      padding-top: 0rem;
+    }
+  }
+
+  
+  &__body{
+    width: 100%;
     margin: 1rem;
     padding-right: 2rem;
 
@@ -59,52 +79,22 @@
     }
   }
 
+&__content {
+  width: 100%;
+  @include h2__DT-subheader;
 
-  &__status {
-    padding-left: 1.5rem;
-
-
-    &--address {
-
-      font-weight: bold;
-
-    }
+  @include tablet {
+    margin-bottom: 2rem;
+    @include h2__DT-subheader;
   }
 
+  @include desktop {
+    @include h2__DT-subheader;
+  }
 }
 
-  .main {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 1rem;
-  }
 
-  .footer {
-    display: flex;
-    padding: 2rem 0;
-    border-top: 1px solid #eaeaea;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .image {
-    width: 70%;
-    height: 50%;
-    margin-left: 20%;
-  }
-
-  .title {
-    font-size: 2rem;
-    margin: 2rem 0;
-  }
-
-  .description {
-    line-height: 1;
-    margin: 2rem 0;
-    font-size: 1.2rem;
-  }
+}
 
   .button {
     border-radius: 4px;
@@ -116,13 +106,12 @@
     width: 200px;
     cursor: pointer;
     margin-bottom: 2%;
+
+    
+    &:hover {
+      background-color: green;
+
+    }
+
   }
 
-  @media (max-width: 1000px) {
-    .main {
-      width: 100%;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-  }

@@ -7,6 +7,7 @@ import { WHITELIST_CONTRACT_ADDRESS, abi } from "../../constants/index.js";
 import Web3Modal from "web3modal";
 import { Contract } from "ethers";
 import "./HomePage.scss";
+import MatrixRainRender from '../../components/MatrixRainRender/MatrixRainRender';
 
 const ethers = require("ethers");
 
@@ -19,7 +20,7 @@ function HomePage() {
     const [maxNumberOfWhitelisted, setMaxNumberOfWhitelisted] = useState(0);
     const web3ModalRef = useRef();
 
-  
+
     const getProviderOrSigner = async (needSigner = false) => {
         // Connect to Metamask
         // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
@@ -81,7 +82,7 @@ function HomePage() {
             // call the numAddressesWhitelisted from the contract
             const _whitelistedAddresses = await whitelistContract.numAddressesWhitelisted();
             const numberwhitelistedAddresses = Number(_whitelistedAddresses)
-            
+
             const _maxwhitelistedAddresses = await whitelistContract.maxWhitelistedAddresses();
             const numbermaxwhitelistedAddresses = Number(_maxwhitelistedAddresses)
 
@@ -143,22 +144,23 @@ function HomePage() {
             if (joinedWhitelist) {
                 return (
                     <>
-                    <div>
-                        Thanks for joining the Whitelist!
-                    </div>
-                    <div>
-                        {numberOfWhitelisted} have already joined the Whitelist out of a maximum of {maxNumberOfWhitelisted}
-                    </div>
+                        <div className="content__container">
+                            <h3 className="content__container--header"> {numberOfWhitelisted} / {maxNumberOfWhitelisted} joined </h3>
+                        </div>
+                        <div className="content__container">
+                            <h3 className="content__container--text"> Thanks for joining! We look forward to launching </h3>
+                        </div>
+                  
                     </>
                 );
             } else if (loading) {
                 return <button>Loading...</button>;
             } else {
                 return (
-                    <div className ="button__container">
-                    <button onClick={addAddressToWhitelist} className="button">
-                        Join the Whitelist
-                    </button>
+                    <div className="button__container">
+                        <button onClick={addAddressToWhitelist} className="button">
+                            Join the Whitelist
+                        </button>
                     </div>
                 );
             }
@@ -180,8 +182,8 @@ function HomePage() {
             // If the wallet is not connected or false, then it does connectwallet function and also if the presale is ended
             // This will display either the presale function or sale function. To add the presale function
             if (!walletConnected) {
-               connectWallet();
-          
+                connectWallet();
+
             } else {
 
                 // If the wallet is already connected, log the wallet address again
@@ -203,17 +205,18 @@ function HomePage() {
 
         initWeb3Modal();
 
-      
-      }, [walletConnected, joinedWhitelist, numberOfWhitelisted]);
+
+    }, [walletConnected, joinedWhitelist, numberOfWhitelisted]);
 
     return (
         <div>
-            <Header/>
+            <Header />
             <div className="appbody">
                 <div className="appbody__header">
-                    <h1 className="appbody__title">Token-Gating NFT Project</h1>
+                    <h1 className="appbody__title">Whitelist</h1>
                 </div>
                 <div>{renderButton()} </div>
+                <MatrixRainRender />
             </div>
             <Footer />
 

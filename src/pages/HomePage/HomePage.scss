@@ -1,3 +1,8 @@
+@use "../../styles/partials/font" as *;
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/mixins" as *;
+@use "../../styles/partials/variables" as *;
+
 
 .slideshow__container {
 
@@ -35,5 +40,41 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    flex-direction: column;
+  }
+
+
+  .content__container{
+    @include container;
+    margin: 0rem;
+    padding-bottom: 1rem;
+    
+
+  }
+
+  .content__container--header{
+    
+    @include h1__M-header;
+    display: flex;
+    padding-left:1.5rem;
+    justify-content:center;
+   
+
+    @include tablet {
+      @include h1__DT-header;
+      display: flex;
+      padding-left:1.5rem;
+      justify-content:center;
+      
+    }
+
+  }
+
+  .content__container--text {
+    @include p__body-large;
+    display: flex;
+    padding-left:1.5rem;
+    justify-content: center;
+
   }
 

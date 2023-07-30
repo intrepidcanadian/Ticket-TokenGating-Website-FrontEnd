@@ -2,7 +2,7 @@ import "./MintingButton.scss";
 import React, { useState, useEffect, useRef } from "react";
 import Web3Modal from "web3modal";
 import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
-import { Contract, parseEther} from "ethers";
+import { Contract, parseEther } from "ethers";
 const ethers = require("ethers")
 
 function MintingButton() {
@@ -13,6 +13,7 @@ function MintingButton() {
     const [presaleStarted, setPresaleStarted] = useState(false);
     const [presaleEnded, setPresaleEnded] = useState(false);
     const [userAddress, setUserAddress] = useState(null);
+    const [price, setPrice] = useState(0);
     const [loading, setLoading] = useState(false);
     const web3ModalRef = useRef();
 
@@ -26,7 +27,11 @@ function MintingButton() {
                 providerOptions: {},
                 disableInjectedProvider: false,
             });
+
             connectWallet();
+
+            // get price of the NFT
+            const _price = getPrice();
 
             // Check if presale has started and ended
             const _presaleStarted = checkIfPresaleStarted();
@@ -56,53 +61,53 @@ function MintingButton() {
 
     const presaleMint = async () => {
         try {
-          // We need a Signer here since this is a 'write' transaction.
-          const signer = await getProviderOrSigner(true);
-          // Create a new instance of the Contract with a Signer, which allows
-          // update methods
-          const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
-          // call the presaleMint from the contract, only whitelisted addresses would be able to mint
-          const tx = await nftContract.presaleMint({
-            // value signifies the cost of one crypto dev which is "0.01" eth.
-            // We are parsing `0.01` string to ether using the utils library from ethers.js
-            value: parseEther("0.01"),
-          });
-          setLoading(true);
-          // wait for the transaction to get mined
-          await tx.wait();
-          setLoading(false);
-          window.alert("You successfully minted a Crypto Dev!");
+            // We need a Signer here since this is a 'write' transaction.
+            const signer = await getProviderOrSigner(true);
+            // Create a new instance of the Contract with a Signer, which allows
+            // update methods
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+            // call the presaleMint from the contract, only whitelisted addresses would be able to mint
+            const tx = await nftContract.presaleMint({
+                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // We are parsing `0.01` string to ether using the utils library from ethers.js
+                value: parseEther("0.01"),
+            });
+            setLoading(true);
+            // wait for the transaction to get mined
+            await tx.wait();
+            setLoading(false);
+            window.alert("You successfully minted a Crypto Dev!");
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      };
-    
-      /**
-       * publicMint: Mint an NFT after the presale
-       */
-      const publicMint = async () => {
+    };
+
+    /**
+     * publicMint: Mint an NFT after the presale
+     */
+    const publicMint = async () => {
         try {
-          // We need a Signer here since this is a 'write' transaction.
-          const signer = await getProviderOrSigner(true);
-          // Create a new instance of the Contract with a Signer, which allows
-          // update methods
-          const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
-          // call the mint from the contract to mint the Crypto Dev
-          const tx = await nftContract.mint({
-            // value signifies the cost of one crypto dev which is "0.01" eth.
-            // We are parsing `0.01` string to ether using the utils library from ethers.js
-            value: parseEther("0.01"),
-          });
-          setLoading(true);
-          // wait for the transaction to get mined
-          await tx.wait();
-          setLoading(false);
-          window.alert("You successfully minted a Crypto Dev!");
+            // We need a Signer here since this is a 'write' transaction.
+            const signer = await getProviderOrSigner(true);
+            // Create a new instance of the Contract with a Signer, which allows
+            // update methods
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+            // call the mint from the contract to mint the Crypto Dev
+            const tx = await nftContract.mint({
+                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // We are parsing `0.01` string to ether using the utils library from ethers.js
+                value: parseEther("0.01"),
+            });
+            setLoading(true);
+            // wait for the transaction to get mined
+            await tx.wait();
+            setLoading(false);
+            window.alert("You successfully minted a Crypto Dev!");
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      };
-    
+    };
+
 
     const connectWallet = async () => {
 
@@ -172,8 +177,8 @@ function MintingButton() {
         try {
             const provider = await getProviderOrSigner()
             const nftContract = new Contract(
-                NFT_CONTRACT_ABI,
                 NFT_CONTRACT_ADDRESS,
+                NFT_CONTRACT_ABI,
                 provider
             );
 
@@ -192,6 +197,23 @@ function MintingButton() {
         }
     };
 
+    const getPrice = async () => {
+
+        try {
+
+            const provider = await getProviderOrSigner()
+            const nftContract = new Contract(
+                NFT_CONTRACT_ADDRESS,
+                NFT_CONTRACT_ABI,
+                provider
+            );
+
+            const _price = await nftContract._price();
+            const _priceNumber = ethers.formatEther(_price)
+            setPrice(_priceNumber)
+
+        } catch (error) { }
+    }
 
     const checkIfPresaleEnded = async () => {
         try {
@@ -205,12 +227,13 @@ function MintingButton() {
 
             // THis will require a big number because of UIN256
             const _presaleEnded = await nftContract.presaleEnded();
-            const currentTimeInSeconds = Date.now() / 1000;
+            const _presaleEndedNumber = _presaleEnded
+            const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
 
             // this is true or false test. Ending is True if current time has passed the presale end time.
-            const hasEnded = _presaleEnded.lt(
-                Math.floor(currentTimeInSeconds)
-            );
+            const hasEnded = _presaleEndedNumber < currentTimeInSeconds;
+
             if (hasEnded) {
                 setPresaleEnded(true);
             } else {
@@ -271,81 +294,45 @@ function MintingButton() {
         }
     };
 
-
-    function buttonAvailability() {
-
-        if (!walletConnected) {
-            console.log(!walletConnected)
-            return (
-                console.log("Wallet is not connected for Pre-Sale")
-            );
-        }
-
-        if (isOwner && !presaleStarted) {
-            // render a button to start the presale
-            console.log(isOwner)
-            console.log(!presaleStarted)
-            return (
-                <button onClick={startPreSale} className="button">
-                    Start the Pre-Sale
-                </button>
-            );
-        }
-
-        if (!presaleStarted) {
-            console.log(!presaleStarted)
-            // just say presale hasn't started yet, come back later
-        }
-
-        if (presaleStarted && !presaleEnded) {
-            console.log(!presaleStarted)
-            console.log(!presaleEnded)
-
-            // allow users to mint in presale
-        }
-
-        if (presaleEnded) {
-            console.log(presaleEnded)
-
-            // allow users to take part in public sale
-        }
-
-    }
-
-
-
-
-
-
     const renderButton = () => {
         // If wallet is not connected, return a button which allows them to connect their wallet
         if (!walletConnected) {
             return (
-                <button onClick={connectWallet} >
-                    Connect your wallet
-                </button>
+                <>
+                    <div className="button__container">
+                        <button onClick={connectWallet} className="button" >
+                            Connect your Wallet to Check the Launch
+                        </button>
+                    </div>
+                </>
             );
         }
 
         // If we are currently waiting for something, return a loading button
         if (loading) {
-            return <button>Loading...</button>;
+            return (<>
+                Loading...
+            </>)
         }
 
         // If connected user is the owner, and presale hasn't started yet, allow them to start the presale
         if (isOwner && !presaleStarted) {
             return (
-                <button onClick={startPreSale}>
-                    Start Presale!
-                </button>
+                <>
+                    <div className="button__container">
+                        <button onClick={startPreSale} className="button">
+                            Start VIP Ticket Sale!
+                        </button>
+                    </div>
+                </>
             );
         }
 
         // If connected user is not the owner but presale hasn't started yet, tell them that
         if (!presaleStarted) {
             return (
-                <div>
-                    <div> Presale hasn&#39;t started!</div>
+                <div className="button__container">
+                    <h3> Presale-Ticket Sale hasn't started yet! Come back when it is started</h3>
                 </div>
             );
         }
@@ -353,12 +340,11 @@ function MintingButton() {
         // If presale started, but hasn't ended yet, allow for minting during the presale period
         if (presaleStarted && !presaleEnded) {
             return (
-                <div>
+                <div className="button__container">
                     <div>
-                        Presale has started!!! If your address is whitelisted, Mint a Crypto
-                        Dev 🥳
+                        Presale has started!!! If you joined the Whitelist earlier, you are eligible to mint a Crypto Dev 🥳
                     </div>
-                    <button onClick={presaleMint}>
+                    <button onClick={presaleMint} className="button">
                         Presale Mint 🚀
                     </button>
                 </div>
@@ -367,10 +353,17 @@ function MintingButton() {
 
         // If presale started and has ended, it's time for public minting
         if (presaleStarted && presaleEnded) {
+
+
             return (
-                <button onClick={publicMint}>
-                    Public Mint 🚀
-                </button>
+                <>
+                    <div className="button__container">
+                        <div>Founder's Club: {price} CFX</div>
+                        <button onClick={publicMint} className="button">
+                            Public Mint 🚀
+                        </button>
+                    </div>
+                </>
             );
         }
     };
@@ -378,7 +371,6 @@ function MintingButton() {
 
     return (
         <>
-            {buttonAvailability()}
             {renderButton()}
 
         </>
