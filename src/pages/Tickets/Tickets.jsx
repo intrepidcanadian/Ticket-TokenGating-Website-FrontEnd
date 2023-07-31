@@ -21,12 +21,13 @@ export default function Tickets() {
                 console.error('Error fetching tickets:', error);
             });
 
-            
+
 
 
     }, []);
 
-
+    
+    
     return (
         <div>
             <Header />
@@ -37,15 +38,32 @@ export default function Tickets() {
                     </h1>
                 </div>
                 <div className="appbody__content">
+                    <div className="appbody__table">
+                        <div className="appbody__table--piclabels">
+                            <p className="appbody__table--labels"></p>
+                        </div>
+                        <p className="appbody__table--labels">Event</p>
+                        <p className="appbody__table--labels">Location</p>
+                        <p className="appbody__table--labels">Time Start</p>
+                    </div>
                     {tickets.map(ticket => (
                         <div key={ticket.id}>
-                            <p>{ticket.eventname}</p>
-                            <p>{ticket.artist}</p>
-                            <p>{ticket.seat}</p>
-                            <p>{ticket.location}</p>
-                            <p>{ticket.eventtimestart}</p>
-                            <p>{ticket.eventtimeend}</p>
-                            <img src={ticket.image} alt={ticket.eventname} />
+                            <div className="appbody__container">
+                                <div className="appbody__imgcontainer">
+                                    <img className="appbody__imgcontainer--image" src={ticket.image} alt={ticket.eventname} />
+                                    <div className="appbody__imgcontainer--overlay">
+                                        <p className="appbody__imgcontainer--textartist">{ticket.artist}</p>
+                                        <p className="appbody__imgcontainer--text">{ticket.seat}</p>
+                                    </div>
+                                </div>
+                                <p className="appbody__container--info">{ticket.eventname}</p>
+                                <p className="appbody__container--info">{ticket.location}</p>
+                                <p className="appbody__container--time">{new Date(ticket.eventtimestart).toLocaleString(undefined,{hour12:true})}</p>
+                                {/* <p className="appbody__container--time">{new Date(ticket.eventtimeend).toLocaleString(undefined,{hour12:true})}</p> */}
+                            </div>
+                            <div className ="appbody__container--description">
+                            <p className="appbody__container--descriptioninfo">{ticket.eventinformation}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
