@@ -23,7 +23,7 @@ function MintingButton() {
             // Assign the Web3Modal class to the reference object by setting it's `current` value
             // The `current` value is persisted throughout as long as this page is open
             web3ModalRef.current = new Web3Modal({
-                network: "goerli",
+                network: "conflux",
                 providerOptions: {},
                 disableInjectedProvider: false,
             });
@@ -321,7 +321,7 @@ function MintingButton() {
                 <>
                     <div className="button__container">
                         <button onClick={startPreSale} className="button">
-                            Start VIP Ticket Sale!
+                            Start Selling Your Tickets to VIP Raptor Members!
                         </button>
                     </div>
                 </>
@@ -332,7 +332,7 @@ function MintingButton() {
         if (!presaleStarted) {
             return (
                 <div className="button__container">
-                    <h3> Presale-Ticket Sale hasn't started yet! Come back when it is started</h3>
+                    <h3> Early access for tickets hasn't started yet! Stay tuned for the Raptors & Lakers Game Ticket Sale!</h3>
                 </div>
             );
         }
@@ -342,10 +342,11 @@ function MintingButton() {
             return (
                 <div className="button__container">
                     <div>
-                        Presale has started!!! If you joined the Whitelist earlier, you are eligible to mint a Crypto Dev 🥳
+                        Presale has started for the Raptors & Lakers Championship Game! If you are Raptors VIP, you will be eligilbe to purchase a ticket! 🥳
                     </div>
+                    <div>Tickets On Early Access Sale: ${price}</div>
                     <button onClick={presaleMint} className="button">
-                        Presale Mint 🚀
+                        Early Access - Buy Ticket 🚀
                     </button>
                 </div>
             );
@@ -358,9 +359,9 @@ function MintingButton() {
             return (
                 <>
                     <div className="button__container">
-                        <div>Founder's Club: {price} CFX</div>
+                        <div>Tickets On Sale: ${price} </div>
                         <button onClick={publicMint} className="button">
-                            Public Mint 🚀
+                            Buy Ticket 🚀
                         </button>
                     </div>
                 </>

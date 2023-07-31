@@ -7,7 +7,7 @@ import { WHITELIST_CONTRACT_ADDRESS, abi } from "../../constants/index.js";
 import Web3Modal from "web3modal";
 import { Contract } from "ethers";
 import "./HomePage.scss";
-import MatrixRainRender from '../../components/MatrixRainRender/MatrixRainRender';
+// import MatrixRainRender from '../../components/MatrixRainRender/MatrixRainRender';
 
 const ethers = require("ethers");
 
@@ -145,7 +145,7 @@ function HomePage() {
                 return (
                     <>
                         <div className="content__container">
-                            <h3 className="content__container--header"> {numberOfWhitelisted} / {maxNumberOfWhitelisted} joined </h3>
+                            <h3 className="content__container--header"> {numberOfWhitelisted} / {maxNumberOfWhitelisted} have joined. We are maxing early access tickets at {maxNumberOfWhitelisted}  </h3>
                         </div>
                         <div className="content__container">
                             <h3 className="content__container--text"> Thanks for joining! We look forward to launching </h3>
@@ -159,7 +159,7 @@ function HomePage() {
                 return (
                     <div className="button__container">
                         <button onClick={addAddressToWhitelist} className="button">
-                            Join the Whitelist
+                            Join the Early Access for Ticket Sales
                         </button>
                     </div>
                 );
@@ -213,10 +213,13 @@ function HomePage() {
             <Header />
             <div className="appbody">
                 <div className="appbody__header">
-                    <h1 className="appbody__title">Whitelist</h1>
+                    <h1 className="appbody__title">Be a Raptors VIP</h1>
                 </div>
+                <div className="appbody__header">
+                    <h1 className = "appbody__title">Get Early Access to Ticket Sales</h1>
+                    </div>
                 <div>{renderButton()} </div>
-                <MatrixRainRender />
+                {/* <MatrixRainRender /> */}
             </div>
             <Footer />
 

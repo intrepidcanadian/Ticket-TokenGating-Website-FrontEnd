@@ -1,10 +1,10 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer"
 import React from "react";
-import './MintYourToken.scss'
+import './BuyTickets.scss'
 import MintingButton from "../../components/MintingButton/MintingButton";
 
-export default function MintYourToken() {
+export default function BuyTickets() {
 
     return (
         <div>
@@ -12,7 +12,7 @@ export default function MintYourToken() {
             <div className="appbody">
                 <div className='appbody__header'>
                     <h1 className='appbody__title'>
-                        Mint Your Token
+                        Buy Tickets
                     </h1>
                 </div>
                 <div className='appbody__body'>

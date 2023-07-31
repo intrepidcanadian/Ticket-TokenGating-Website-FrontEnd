@@ -33,25 +33,34 @@ export default function Header() {
             className="header__link"
             onClick={() => handleNavLinkClick("/")}
           >
-            Home
+            Join the Raptors VIP List
           </NavLink>
         </div>
         <div className="header__link-container">
           <NavLink
-            to="/mint"
+            to="/buy-tickets"
             className="header__link"
-            onClick={() => handleNavLinkClick("/mint")}
+            onClick={() => handleNavLinkClick("/buy-tickets")}
           >
-            Build Your Community
+            Purchase Tickets
           </NavLink>
         </div>
         <div className="header__link-container">
           <NavLink
-            to="/shop"
+            to="/tickets"
+            className="header__link"
+            onClick={() => handleNavLinkClick("/tickets")}
+          >
+            View Your Ticket
+          </NavLink>
+        </div>
+        <div className="header__link-container">
+          <NavLink
+            to="/shopping"
             className="header__link"
             onClick={() => handleNavLinkClick("/shop")}
           >
-            Shop Products
+            Merch Available Only for Ticket Owners
           </NavLink>
         </div>
         <div className="header__link-container">

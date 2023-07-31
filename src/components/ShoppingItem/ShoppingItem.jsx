@@ -1,93 +1,391 @@
-import { useEffect } from "react";
-import Stitch from "../../assets/Logo/Stitch.svg"
+import "./ShoppingItem.scss";
+import React, { useState, useEffect, useRef } from "react";
+import Web3Modal from "web3modal";
+import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
+import { Contract, parseEther } from "ethers";
+const ethers = require("ethers")
 
-export default function ShoppingItem() {
+function listNFT() {
+
+    const [walletConnected, setWalletConnected] = useState(false);
+    const [isOwner, setIsOwner] = useState(false);
+    const [tokenIdsMinted, setTokenIdsMinted] = useState("0");
+    const [presaleStarted, setPresaleStarted] = useState(false);
+    const [presaleEnded, setPresaleEnded] = useState(false);
+    const [userAddress, setUserAddress] = useState(null);
+    const [price, setPrice] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const web3ModalRef = useRef();
 
     useEffect(() => {
-        const handleClick = () => {
-          document.getElementById('rotate').classList.toggle('bg-indigo-600');
-          document.getElementById('rotate').classList.toggle('bg-lime-500');
-        };
-    
-        document.getElementById('canvas3d').addEventListener('click', handleClick);
-    
-        // Clean up the event listener when the component unmounts
-        return () => {
-          document.getElementById('canvas3d').removeEventListener('click', handleClick);
-        };
-      }, []);
+        // if wallet is not connected, create a new instance of Web3Modal and connect the MetaMask wallet
+        if (!walletConnected) {
+            // Assign the Web3Modal class to the reference object by setting it's `current` value
+            // The `current` value is persisted throughout as long as this page is open
+            web3ModalRef.current = new Web3Modal({
+                network: "goerli",
+                providerOptions: {},
+                disableInjectedProvider: false,
+            });
+
+            connectWallet();
+
+            // get price of the NFT
+            const _price = getPrice();
+
+            // Check if presale has started and ended
+            const _presaleStarted = checkIfPresaleStarted();
+            if (_presaleStarted) {
+                checkIfPresaleEnded();
+            }
+
+            getTokenIdsMinted();
+
+            // Set an interval which gets called every 5 seconds to check presale has ended
+            const presaleEndedInterval = setInterval(async function () {
+                const _presaleStarted = await checkIfPresaleStarted();
+                if (_presaleStarted) {
+                    const _presaleEnded = await checkIfPresaleEnded();
+                    if (_presaleEnded) {
+                        clearInterval(presaleEndedInterval);
+                    }
+                }
+            }, 5 * 1000);
+
+            // set an interval to get the number of token Ids minted every 5 seconds
+            setInterval(async function () {
+                await getTokenIdsMinted();
+            }, 5 * 1000);
+        }
+    }, [walletConnected]);
+
+    const presaleMint = async () => {
+        try {
+            // We need a Signer here since this is a 'write' transaction.
+            const signer = await getProviderOrSigner(true);
+            // Create a new instance of the Contract with a Signer, which allows
+            // update methods
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+            // call the presaleMint from the contract, only whitelisted addresses would be able to mint
+            const tx = await nftContract.presaleMint({
+                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // We are parsing `0.01` string to ether using the utils library from ethers.js
+                value: parseEther("0.01"),
+            });
+            setLoading(true);
+            // wait for the transaction to get mined
+            await tx.wait();
+            setLoading(false);
+            window.alert("You successfully minted a Crypto Dev!");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    /**
+     * publicMint: Mint an NFT after the presale
+     */
+    const publicMint = async () => {
+        try {
+            // We need a Signer here since this is a 'write' transaction.
+            const signer = await getProviderOrSigner(true);
+            // Create a new instance of the Contract with a Signer, which allows
+            // update methods
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+            // call the mint from the contract to mint the Crypto Dev
+            const tx = await nftContract.mint({
+                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // We are parsing `0.01` string to ether using the utils library from ethers.js
+                value: parseEther("0.01"),
+            });
+            setLoading(true);
+            // wait for the transaction to get mined
+            await tx.wait();
+            setLoading(false);
+            window.alert("You successfully minted a Crypto Dev!");
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+
+    const connectWallet = async () => {
+
+        try {
+
+            let web3Provider = await getProviderOrSigner();
+            const accounts = await web3Provider.listAccounts();
+
+            if (accounts.length > 0) {
+                const connecteduserAddress = accounts[0].address;
+                setWalletConnected(true)
+                setUserAddress(connecteduserAddress)
+                console.log("Wallet Address:", connecteduserAddress);
+            }
+
+        } catch (error) {
+
+            if (error.message === "User Rejected") {
+                // User rejected the connection request - probably disconnected Metamask
+                setWalletConnected(false);
+
+            } else {
+                // Other errors, handle them accordingly
+                console.error("Error connecting wallet:", error);
+            }
+        }
+    };
+
+    const getProviderOrSigner = async (needSigner = false) => {
+        // We need to gain access to provider/signer from Metamask
+        const provider = await web3ModalRef.current.connect();
+        const web3Provider = new ethers.BrowserProvider(provider);
+
+        if (needSigner) {
+            const signer = web3Provider.getSigner();
+            console.log(signer)
+
+            return signer;
+        }
+
+        return web3Provider;
+
+    };
+
+    //callable only by owner of the contract
+
+    const startPreSale = async () => {
+
+        try {
+            const signer = await getProviderOrSigner(true);
+            console.log(signer)
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
+
+            const txn = await nftContract.startPresale();
+            console.log(txn)
+            await txn.wait();
+
+            console.log(txn)
+            setPresaleStarted(true);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const checkIfPresaleStarted = async () => {
+        try {
+            const provider = await getProviderOrSigner()
+            const nftContract = new Contract(
+                NFT_CONTRACT_ADDRESS,
+                NFT_CONTRACT_ABI,
+                provider
+            );
+
+            const _presaleStarted = await nftContract.presaleStarted();
+            setPresaleStarted(_presaleStarted);
+
+            if (!_presaleStarted) {
+                await getOwner();
+            }
+            setPresaleStarted(_presaleStarted);
+            return _presaleStarted;
+
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    };
+
+    const getPrice = async () => {
+
+        try {
+
+            const provider = await getProviderOrSigner()
+            const nftContract = new Contract(
+                NFT_CONTRACT_ADDRESS,
+                NFT_CONTRACT_ABI,
+                provider
+            );
+
+            const _price = await nftContract._price();
+            const _priceNumber = ethers.formatEther(_price)
+            setPrice(_priceNumber)
+
+        } catch (error) { }
+    }
+
+    const checkIfPresaleEnded = async () => {
+        try {
+
+            const provider = await getProviderOrSigner()
+            const nftContract = new Contract(
+                NFT_CONTRACT_ADDRESS,
+                NFT_CONTRACT_ABI,
+                provider
+            );
+
+            // THis will require a big number because of UIN256
+            const _presaleEnded = await nftContract.presaleEnded();
+            const _presaleEndedNumber = _presaleEnded
+            const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+
+
+            // this is true or false test. Ending is True if current time has passed the presale end time.
+            const hasEnded = _presaleEndedNumber < currentTimeInSeconds;
+
+            if (hasEnded) {
+                setPresaleEnded(true);
+            } else {
+                setPresaleEnded(false);
+            }
+            return hasEnded;
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    };
+
+    // Make it so only the owner can start the contract
+    const getOwner = async () => {
+        try {
+            const provider = await getProviderOrSigner(false);
+            console.log(provider)
+
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, provider);
+
+            console.log(nftContract)
+
+            // compares owner of the contract address and the useraddress to render a button for owner
+            const owner = await nftContract.owner();
+            // get the signer
+            const signer = await getProviderOrSigner(true);
+            const userAddress = await signer.getAddress();
+
+            console.log(signer)
+            console.log(owner)
+            console.log(userAddress)
+
+            if (owner.toLowerCase() === userAddress.toLowerCase()) {
+                setIsOwner(true);
+
+                // Owner is connected to website, to render a button for Owner
+            }
+        } catch (error) {
+            console.error('err', error);
+        }
+    };
+
+
+    const getTokenIdsMinted = async () => {
+        try {
+            // Get the provider from web3Modal, which in our case is MetaMask
+            // No need for the Signer here, as we are only reading state from the blockchain
+            const provider = await getProviderOrSigner();
+            // We connect to the Contract using a Provider, so we will only
+            // have read-only access to the Contract
+            const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, provider);
+            // call the tokenIds from the contract
+            const _tokenIds = await nftContract.tokenIds();
+            //_tokenIds is a `Big Number`. We need to convert the Big Number to a string
+            setTokenIdsMinted(_tokenIds.toString());
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const renderButton = () => {
+        // If wallet is not connected, return a button which allows them to connect their wallet
+        if (!walletConnected) {
+            return (
+                <>
+                    <div className="button__container">
+                        <button onClick={connectWallet} className="button" >
+                            Connect your Wallet to Check the Launch
+                        </button>
+                    </div>
+                </>
+            );
+        }
+
+        // If we are currently waiting for something, return a loading button
+        if (loading) {
+            return (<>
+                Loading...
+            </>)
+        }
+
+        // If connected user is the owner, and presale hasn't started yet, allow them to start the presale
+        if (isOwner && !presaleStarted) {
+            return (
+                <>
+                    <div className="button__container">
+                        <button onClick={startPreSale} className="button">
+                            Start VIP Ticket Sale!
+                        </button>
+                    </div>
+                </>
+            );
+        }
+
+        // If connected user is not the owner but presale hasn't started yet, tell them that
+        if (!presaleStarted) {
+            return (
+                <div className="button__container">
+                    <h3> Presale-Ticket Sale hasn't started yet! Come back when it is started</h3>
+                </div>
+            );
+        }
+
+        // If presale started, but hasn't ended yet, allow for minting during the presale period
+        if (presaleStarted && !presaleEnded) {
+            return (
+                <div className="button__container">
+                    <div>
+                        Presale has started!!! If you joined the Whitelist earlier, you are eligible to mint a Crypto Dev 🥳
+                    </div>
+                    <button onClick={presaleMint} className="button">
+                        Presale Mint 🚀
+                    </button>
+                </div>
+            );
+        }
+
+        // If presale started and has ended, it's time for public minting
+        if (presaleStarted && presaleEnded) {
+
+
+            return (
+                <>
+                    <div className="button__container">
+                        <div>Founder's Club: {price} CFX</div>
+                        <button onClick={publicMint} className="button">
+                            Public Mint 🚀
+                        </button>
+                    </div>
+                </>
+            );
+        }
+    };
+
 
     return (
-
         <>
-            <header class="block fixed inset-x-0 z-50 p-5 md:p-10 flex items-start justify-between gap-10">
-                <div class="pl-5 md:pr-10 flex items-center">
-                    <svg width="60" height="60" viewBox="0 0 60 20.9" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="m60 0-43.9 18.6c-3.7 1.5-6.7 2.3-9.2 2.3-2.8 0-4.8-1-6.1-2.9-1.6-2.5-.9-6.6 1.9-10.9 1.6-2.5 3.7-4.8 5.8-7-.5.7-4.7 7.8-.1 11.1.9.7 2.2 1 3.8 1 1.3 0 2.8-.2 4.4-.6z" /></svg>
-                </div>
+            {renderButton()}
 
-                <div class="px-6 md:px-10 py-4 md:py-6 flex items-center justify-between gap-10 bg-white/70 backdrop-blur-sm rounded-md sm:w-full lg:w-2/3 leading-none">
-                    <ul class="hidden sm:flex items-center gap-6 md:gap-8">
-                        <li>
-                            <a href="#" class="block relative after:block after:absolute after:-bottom-[5px] after:w-full after:h-px after:bg-current after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-right hover:after:origin-left">Shop</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block relative after:block after:absolute after:-bottom-[5px] after:w-full after:h-px after:bg-current after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-right hover:after:origin-left">Outlet</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block relative after:block after:absolute after:-bottom-[5px] after:w-full after:h-px after:bg-current after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-right hover:after:origin-left">Explore</a>
-                        </li>
-                    </ul>
-                    <ul class="flex items-center gap-6 md:gap-8">
-                        <li>
-                            <button type="button" aria-label="Search" class="p-3 -m-3 rounded-full transition-colors hover:bg-violet-50">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM4 11.5a7.5 7.5 0 1 1 13.145 4.938l4.209 4.208-.708.708-4.208-4.209A7.5 7.5 0 0 1 4 11.5Z" /></svg>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" aria-label="Cart" class="p-3 -m-3 rounded-full transition-colors hover:bg-violet-50">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.525 3.525A3.5 3.5 0 0 1 15.5 6v1.5H21V17a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7.5h5.5V6a3.5 3.5 0 0 1 1.025-2.475ZM8.5 8.5v3h1v-3h5v3h1v-3H20V17a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8.5h4.5Zm6-1h-5V6a2.5 2.5 0 0 1 5 0v1.5Z" /></svg>
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" aria-label="Account" class="p-3 -m-3 rounded-full transition-colors hover:bg-violet-50">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 4a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM7.5 7.5a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Zm0 7.5A3.5 3.5 0 0 0 4 18.5V21H3v-2.5A4.5 4.5 0 0 1 7.5 14h9a4.5 4.5 0 0 1 4.5 4.5V21h-1v-2.5a3.5 3.5 0 0 0-3.5-3.5h-9Z" /></svg>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </header>
-
-            <div class="absolute inset-0 z-0 group cursor-pointer bg-violet-50">
-                <canvas id="canvas3d" class="block w-full h-full relative z-10"></canvas>
-
-                <div class="absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2">
-                    <svg class="animate-spin h-10 w-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <g fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2">
-                            <circle class="opacity-20" cx="12" cy="12" r="11" />
-                            <path d="m23 12c0 6.1-4.9 11-11 11" />
-                        </g>
-                    </svg>
-                </div>
-
-                <button type="button" id="rotate" class="absolute left-1/2 bottom-10 -translate-x-1/2 z-20 bg-indigo-600 rounded-full pointer-events-none group-hover:scale-110 transition">
-                    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" class="w-[50px] h-[50px] md:w-[80px] md:h-[80px]">
-                        <path d="m23.7 23.7c4.3-4.3 10.2-6.8 16.3-6.8s12 2.4 16.3 6.8c3.2 3.2 5.4 7.3 6.3 11.7l3.8-5.1 2.8 2-7.4 10.1-10.1-7.4 2-2.8 5.6 4.1c-.7-3.4-2.2-6.6-4.5-9.3-3.1-3.6-7.5-5.9-12.2-6.5s-9.5.5-13.5 3.1-6.8 6.6-8.1 11.3c-1.2 4.6-.7 9.5 1.4 13.8s5.7 7.6 10.1 9.5c4.4 1.8 9.3 2 13.8.4s8.3-4.6 10.7-8.8l3 1.7c-2 3.5-5 6.5-8.5 8.5s-7.5 3.1-11.5 3.1c-6.1 0-12-2.4-16.3-6.8-4.3-4.3-6.8-10.2-6.8-16.3s2.5-12 6.8-16.3z" fill="#fff" /></svg>
-
-                    <span class="block absolute left-full top-1/2 -translate-y-1/2 whitespace-nowrap ml-4 opacity-0 group-hover:opacity-100 transition-opacity">Toggle view</span>
-                </button>
-            </div>
-
-            <aside class="hidden lg:block fixed right-0 bottom-0 z-50 px-10 pb-[72px] w-[38%] max-w-[500px]">
-                <div class="px-10 pt-10 rounded-md bg-white/70 backdrop-blur-sm">
-                    <h1 class="text-3xl">Nike Pegasus 33</h1>
-                    <h2>Men's Road Running Shoes</h2>
-                    <p class="mt-3">$130</p>
-                    <a href="https://www.linkedin.com/in/jorgecheevers" target="_blank" rel="noopener" class="block w-full p-5 bg-black text-white text-center rounded-full translate-y-1/2">
-                        More information
-                    </a>
-                </div>
-            </aside>
         </>
+    );
 
-    )
 }
+
+export default MintingButton;
+
+
+
+
+
+
+
+
+
+
