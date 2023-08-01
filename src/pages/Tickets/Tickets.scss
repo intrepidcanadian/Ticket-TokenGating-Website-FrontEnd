@@ -3,6 +3,21 @@
 @use "../../styles/partials/mixins" as *;
 @use "../../styles/partials/variables" as *;
 
+
+.appbody__mastercontainer {
+
+display:flex;
+flex-direction:column;
+background-color: red;
+border-radius: 2rem;
+margin: 1rem;
+// background-image: url(../../assets/banneredit.png);
+// background-size: contain;
+// background-repeat: no-repeat;
+// background-position: right;
+background-color: black;
+}
+
 .appbody__table {
 
     display: flex;
@@ -34,12 +49,15 @@
     flex-direction: row;
     padding: 2rem;
 
+
+
     &--info {
         display: flex;
         width: 33%;
         padding: 1rem;
         align-items: center;
         justify-content: center;
+        color: white;
     }
 
     &--time {
@@ -48,23 +66,19 @@
         padding: 1rem;
         align-items: center;
         justify-content: center;
+        color: white;
 
     }
 
-    &--description {
+    &--descriptioninfo {
         display: flex;
         width: 100%;;
         align-items: center;
         justify-content: center;
-        border-bottom: black;
-
-        &--info {
-            display: flex;
-            width: 100%;;
-            padding-left: 1rem;
-    
-        }
-
+        font-size: 1rem;
+        padding: 0rem 2rem 1rem 2rem;
+        color: white;
+   
     }
 
 

@@ -26,8 +26,8 @@ export default function Tickets() {
 
     }, []);
 
-    
-    
+
+
     return (
         <div>
             <Header />
@@ -48,21 +48,21 @@ export default function Tickets() {
                     </div>
                     {tickets.map(ticket => (
                         <div key={ticket.id}>
-                            <div className="appbody__container">
-                                <div className="appbody__imgcontainer">
-                                    <img className="appbody__imgcontainer--image" src={ticket.image} alt={ticket.eventname} />
-                                    <div className="appbody__imgcontainer--overlay">
-                                        <p className="appbody__imgcontainer--textartist">{ticket.artist}</p>
-                                        <p className="appbody__imgcontainer--text">{ticket.seat}</p>
+                            <div className="appbody__mastercontainer">
+                                <div className="appbody__container">
+                                    <div className="appbody__imgcontainer">
+                                        <img className="appbody__imgcontainer--image" src={ticket.image} alt={ticket.eventname} />
+                                        <div className="appbody__imgcontainer--overlay">
+                                            <p className="appbody__imgcontainer--textartist">{ticket.artist}</p>
+                                            <p className="appbody__imgcontainer--text">{ticket.seat}</p>
+                                        </div>
                                     </div>
+                                    <p className="appbody__container--info">{ticket.eventname}</p>
+                                    <p className="appbody__container--info">{ticket.location}</p>
+                                    <p className="appbody__container--time">{new Date(ticket.eventtimestart).toLocaleString(undefined, { hour12: true })}</p>
+                                    {/* <p className="appbody__container--time">{new Date(ticket.eventtimeend).toLocaleString(undefined,{hour12:true})}</p> */}
                                 </div>
-                                <p className="appbody__container--info">{ticket.eventname}</p>
-                                <p className="appbody__container--info">{ticket.location}</p>
-                                <p className="appbody__container--time">{new Date(ticket.eventtimestart).toLocaleString(undefined,{hour12:true})}</p>
-                                {/* <p className="appbody__container--time">{new Date(ticket.eventtimeend).toLocaleString(undefined,{hour12:true})}</p> */}
-                            </div>
-                            <div className ="appbody__container--description">
-                            <p className="appbody__container--descriptioninfo">{ticket.eventinformation}</p>
+                                <p className="appbody__container--descriptioninfo">Token Id: {ticket.id}. {ticket.eventinformation}</p>
                             </div>
                         </div>
                     ))}

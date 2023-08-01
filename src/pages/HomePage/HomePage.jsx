@@ -8,8 +8,14 @@ import Web3Modal from "web3modal";
 import { Contract } from "ethers";
 import "./HomePage.scss";
 // import MatrixRainRender from '../../components/MatrixRainRender/MatrixRainRender';
+import logo1 from "../../assets/logo1.png";
+import logo2 from "../../assets/logo2.png";
+import logo3 from "../../assets/logo3.png";
+import logo4 from "../../assets/logo4.png";
+
 
 const ethers = require("ethers");
+
 
 function HomePage() {
 
@@ -150,7 +156,7 @@ function HomePage() {
                         <div className="content__container">
                             <h3 className="content__container--text"> Thanks for joining! We look forward to launching </h3>
                         </div>
-                  
+
                     </>
                 );
             } else if (loading) {
@@ -213,13 +219,18 @@ function HomePage() {
             <Header />
             <div className="appbody">
                 <div className="appbody__header">
-                    <h1 className="appbody__title">Be a Raptors VIP</h1>
+                    <h1 className="home__title">Be a Raptors VIP - Get Early Access to Playoff Ticket Sales</h1>
                 </div>
-                <div className="appbody__header">
-                    <h1 className = "appbody__title">Get Early Access to Ticket Sales</h1>
-                    </div>
+                <div className="home__mastercontainer">
+                    <h2 className="homn__container--text">Only 10 Total Early Access Spots - Connect Your Wallet to Check If Any Spots Remain!!</h2>
+                </div>
+                <div className="home__mastercontainer--logos">
+                    <img className="icon--picture" src={logo1} alt="Logo1" />
+                    <img className="icon--picture" src={logo2} alt="Logo2" />
+                    <img className="icon--picture" src={logo3} alt="Logo3" />
+                    <img className="icon--picture" src={logo4} alt="Logo4" />
+                </div>
                 <div>{renderButton()} </div>
-                {/* <MatrixRainRender /> */}
             </div>
             <Footer />
 

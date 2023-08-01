@@ -6,7 +6,7 @@ import { NavLink, useNavigate  } from "react-router-dom";
 import {useState} from "react";
 
 // Assets
-import logo from "../../assets/Logo/community.svg";
+import logo from "../../assets/banneredit.png";
 
 export default function Header() {
 
@@ -56,7 +56,7 @@ export default function Header() {
         </div>
         <div className="header__link-container">
           <NavLink
-            to="/shopping"
+            to="/shop"
             className="header__link"
             onClick={() => handleNavLinkClick("/shop")}
           >

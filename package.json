@@ -14,6 +14,7 @@
     "react": "^18.2.0",
     "react-router-dom": "^6.14.2",
     "sass": "^1.64.1",
+    "swiper": "^10.0.4",
     "three": "^0.155.0",
     "web-vitals": "^3.4.0",
     "web3modal": "^1.9.12"

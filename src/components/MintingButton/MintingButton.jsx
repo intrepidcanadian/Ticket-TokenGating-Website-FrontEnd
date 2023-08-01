@@ -70,13 +70,13 @@ function MintingButton() {
             const tx = await nftContract.presaleMint({
                 // value signifies the cost of one crypto dev which is "0.01" eth.
                 // We are parsing `0.01` string to ether using the utils library from ethers.js
-                value: parseEther("0.01"),
+                value: parseEther("10"),
             });
             setLoading(true);
             // wait for the transaction to get mined
             await tx.wait();
             setLoading(false);
-            window.alert("You successfully minted a Crypto Dev!");
+            window.alert("You successfully purchased a Raptors Playoff Ticket!");
         } catch (err) {
             console.error(err);
         }
@@ -96,13 +96,13 @@ function MintingButton() {
             const tx = await nftContract.mint({
                 // value signifies the cost of one crypto dev which is "0.01" eth.
                 // We are parsing `0.01` string to ether using the utils library from ethers.js
-                value: parseEther("0.01"),
+                value: parseEther("10"),
             });
             setLoading(true);
             // wait for the transaction to get mined
             await tx.wait();
             setLoading(false);
-            window.alert("You successfully minted a Crypto Dev!");
+            window.alert("You successfully purchased a Raptors Playoff Ticket!");
         } catch (err) {
             console.error(err);
         }
@@ -344,7 +344,7 @@ function MintingButton() {
                     <div>
                         Presale has started for the Raptors & Lakers Championship Game! If you are Raptors VIP, you will be eligilbe to purchase a ticket! 🥳
                     </div>
-                    <div>Tickets On Early Access Sale: ${price}</div>
+                    <div className = "button__container--text">Tickets On Early Access Sale: ${price}</div>
                     <button onClick={presaleMint} className="button">
                         Early Access - Buy Ticket 🚀
                     </button>
@@ -359,7 +359,7 @@ function MintingButton() {
             return (
                 <>
                     <div className="button__container">
-                        <div>Tickets On Sale: ${price} </div>
+                        <div className = "button__container--text">Tickets On Sale: ${price} </div>
                         <button onClick={publicMint} className="button">
                             Buy Ticket 🚀
                         </button>
