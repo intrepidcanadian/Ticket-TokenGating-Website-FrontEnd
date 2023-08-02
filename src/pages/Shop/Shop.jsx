@@ -6,9 +6,11 @@ import Web3Modal from "web3modal";
 import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
 import { Contract, parseEther } from "ethers";
 import axios from 'axios';
+import NFTLogo from "../../components/NFTLogo/NFTLogo";
 
 
 const ethers = require("ethers")
+
 
 
 export default function Shop() {
@@ -16,6 +18,7 @@ export default function Shop() {
     const [connectedAddress, setUserAddress] = useState([]);
     const [walletConnected, setWalletConnected] = useState(false);
     const web3ModalRef = useRef();
+    const [ownersofnft, setOwnersOfNFT] = useState([]);
 
     const [merchs, setMerch] = useState([]);
 
@@ -86,33 +89,36 @@ export default function Shop() {
     };
 
     const nftOwned = async () => {
-
         try {
-            const signer = await getProviderOrSigner(false);
-            console.log(signer)
+            const signer = await getProviderOrSigner(false); // Assuming this function returns a signer
+            console.log(signer);
             const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
 
-            let issuedtokenids = await ethers.BigNumber.from(nftContract.tokenIds());
-            let ownersofnft = []
-            let ownerofnftID = await nftContract.ownerOf(1)
+            let issuedtokenids = await nftContract.tokenIds();
+            let issuedtokenidsformat = issuedtokenids.toLocaleString();
+            let ownersofnft = [];
+
             console.log(issuedtokenids);
             console.log(ownersofnft);
-            console.log(ownerofnftID);
 
+            async function fetchOwners() {
+                for (let i = 1; i <= issuedtokenidsformat; i++) {
+                    const ownerofnftID = await nftContract.ownerOf(i);
+                    console.log(ownerofnftID)
+                    ownersofnft.push(ownerofnftID);
+                    setOwnersOfNFT(ownersofnft);
+                }
+            }
 
+            // Call the fetchOwners function to populate the ownersofnft array
+            await fetchOwners();
 
-            // for (let i = 0; i < 1; i++) {
-            //     ownersofnft.push(await nftContract.ownerOf(i));
-            // }
-
-            // console.log(ownersofnft)
-
+            // Now you can access the ownersofnft array
+            console.log(ownersofnft);
         } catch (error) {
-            console.error(error);
+            console.error("Error:", error);
         }
-    };
-
-
+      };
 
 
     return (
@@ -123,12 +129,15 @@ export default function Shop() {
                     <h1 className='appbody__title'>
                         Exclusive Merch
                     </h1>
+                    {ownersofnft.includes(connectedAddress) ? (
+                    <NFTLogo />) : null}
                 </div>
                 <div className="appbody__content">
                     <div className="appbody__container--productstitle">
                         <p className="appbody__container--products">Products</p>
                         <p className="appbody__container--products">Price</p>
-                        <p className="appbody__container--products">VIP Price</p>
+                        {ownersofnft.includes(connectedAddress) ? (
+                            <p className="appbody__container--products">VIP Price</p>) : null}
                     </div>
 
                     {merchs.map(merch => (
@@ -138,8 +147,11 @@ export default function Shop() {
                                 <p className="appbody__container--products">{merch.productName}</p>
                                 {/* <p>{merch.productDescription}</p> */}
                                 {/* <p>{merch.productMaterial}</p> */}
-                                <p className="appbody__container--price">${merch.price}</p>
-                                <p className="appbody__container--price">New Discounted Price</p>
+                                <p className="appbody__container--price">${(merch.price).toFixed(2)}</p>
+                                {ownersofnft.includes(connectedAddress) ? (
+                                    <p className="appbody__container--discountprice">
+                                        ${(merch.price * 0.85).toFixed(2)}
+                                    </p>) : null}
                             </div>
                         </div>
                     ))}

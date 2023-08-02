@@ -17,6 +17,12 @@
     width: 100%;
 }
 
+.appbody__container--discountprice{
+
+    display: flex;
+    width: 100%;
+}
+
 .appbody__container--productstitle {
 
     display: flex;
@@ -27,4 +33,12 @@
     background: black;
     color: white;
     border-radius: 2rem;
+}
+
+.nftlogo__container{
+
+    color: gold;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: row;
 }

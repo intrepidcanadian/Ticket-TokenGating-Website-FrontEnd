@@ -222,7 +222,7 @@ function HomePage() {
                     <h1 className="home__title">Be a Raptors VIP - Get Early Access to Playoff Ticket Sales</h1>
                 </div>
                 <div className="home__mastercontainer">
-                    <h2 className="homn__container--text">Only 10 Total Early Access Spots - Connect Your Wallet to Check If Any Spots Remain!!</h2>
+                    <h2 className="homn__container--text">Only Limited Early Access Spots - Connect Your Wallet to Check If Any Spots Remain!!</h2>
                 </div>
                 <div className="home__mastercontainer--logos">
                     <img className="icon--picture" src={logo1} alt="Logo1" />
