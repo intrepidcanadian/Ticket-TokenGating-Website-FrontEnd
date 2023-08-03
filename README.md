@@ -6,12 +6,18 @@ First and foremost - credits! I was able to do this with the help of the Conflux
 
 The open sourced libraries I used are listed in my package.json file under dependencies. I would highly recommend Web3 developers check out Learn Web 3 (https://learnweb3.io/)
 
+<<<<<<< HEAD
 Youtube Video of Demo
 
 https://www.youtube.com/watch?v=SSgxSkdwqAg
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/SSgxSkdwqAg" frameborder="0" allowfullscreen></iframe>
 
+=======
+Video of the Demo
+https://www.youtube.com/watch?v=SSgxSkdwqAg
+
+>>>>>>> d4a98503c09797617e6905a346a16eaed0f39480
 # The Why
 
 When I was at Shopify, I was intrigued with operating my own online ecommerce store. That is how I got involved with beefinthecity.ca - my own Shopify store. In between exchanging emails with customers, driving all-over Ontario for deliveries/sourcing high-quality meat, I soon became very appreciative of the customers that supported me for all the early hiccups and believing in my product. What I realized was that these customers let me be in the game - I was a small business owner and their vote of confidence allowed me to purchase products at wholesale prices, purchase meat in sustainable manner (a cow doesn't just have ribeye), order dry ice in bulk, get preferable rates from logistic companies, order packaging/insulation, etc. At one point, I understood the drive and mindset that entrepeneurs have to make their business grow - I wanted to make money so that I had the capital to make the product/operations even better. I wasn't satisfied with the insulation, the logistics, the delay between order/delivery, etc. When I was thinking of how to reward my early customers, I didn't like the engagement of giving discount codes and some of the loyalty programs out there that just wasn't that great. The points accumulated generally just led to another discount code to be applied on checkout. I also was extremely interested in blockchain. Having a background in finance, and also being a merchant, I recognized how costly it was to transact. There are SIGNIFICANT cuts taken when you add in network interchange fees, platform fees, stripe fees, monthly commercial bank fees, wire transfer fees, e-transfer fees, etc. Blockchain was an alternative.
