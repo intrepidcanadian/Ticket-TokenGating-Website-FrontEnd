@@ -1,3 +1,34 @@
+# Introduction
+
+Hi there! My name is Tony Lau and I am super excited you are checking my repository out for this NFT project.
+
+First and foremost - credits! I was able to do this with the help of tutorials (LearnWeb3Dao), Brainstation guidance from Sandun and John, and a bunch of really awesome open-sourced libraries.
+
+The open sourced libraries I used are listed in my package.json file under dependencies.
+
+# The Why
+
+When I was at Shopify, I was intrigued with operating my own online ecommerce store. That is how I got involved with beefinthecity.ca. In between exchanging emails with customers, driving all-over Ontario for deliveries/sourcing high-quality meat, I soon became very appreciative of the customers that supported me for all the early hiccups and believing in my product. What I realized was that these customers let me be in the game - I was a small business owner and their vote of confidence allowed me to purchase products at wholesale prices, purchase meat in sustainable manner (a cow doesn't just have ribeye), order dry ice in bulk, get preferable rates from logistic companies, order packaging/insulation, etc. At one point, I understood the drive and mindset that entrepeneurs have to make their business grow - I wanted to make money so that I had the capital to make the product/operations even better. I wasn't satisfied with the insulation, the logistics, the delay between order/delivery, etc. When I was thinking of how to reward my early customers, I didn't like the engagement of giving discount codes and some of the loyalty programs out there that just wasn't that great. The points accumulated generally just led to another discount code to be applied on checkout. I also was extremely interested in blockchain. Having a background in finance, and also being a merchant, I recognized how costly it was to transact. There are SIGNIFICANT cuts taken when you add in network interchange fees, platform fees, stripe fees, monthly commercial bank fees, wire transfer fees, e-transfer fees, etc. Blockchain was an alternative.
+
+# The Product
+
+Here you have a demonstration of blockchain (using Conflux e-space testnet). In this video, you will see that the transaction costs are extremely low. The faucet for testnet funds is here: https://developer.confluxnetwork.org/guides/en/how_to_use_cfx_faucet/
+
+What is more interesting is the application of the blockchain. I got really excited when developing the website that the applications of linking tokens with utility is endless. I used a ticket website as an example, but I think there are some really interesting applications. 
+
+1. Blockchain can provide authentication on the buyer identity. It can record information of purchases and tailor the website to the buyer. Communities can be built by smaller creators just like loyalty programs (Air Miles, Aeroplan, Canadian Tire money, etc.) and be deployed with ease. Imagine giving discounts to your family and friends, providing your Twitch/Instagram/Twitter subscribers an avenue to share affiliate discounts and margins through blockchain. The ticket website uses discount, but I can see flash sales being done on blockchain and/or tailored products and/or interactive forms of engagement.
+
+2. Besides just purchase, pre-purchase and post-purchase applications could be really cool too. Imagine as a merchant, I can load metadata besides the ticket information. Whether it be linking GPS data to my products for tracking and/or supply origination verification whether the product moves. The analogy would be a barcode that exists today. 
+
+For post-purchase, if a concert was cancelled, even if the ticket was re-sold, I now have a method to refund exactly to the current owners that still own the ticket. It wouldn't be to the people that have re-sold the ticket. 
+
+3. There are many other applications possible, the last could be re-sale market. There is no need to have a marketplace that takes significant cuts as middle-man. The transparency of blockchain could theoretically allow someone to deploy a contract that allows the purchaser to buy directly without going through more obscure methods (and risking not recieving the tickets) etc. Overall, many different exciting applications.
+
+# How this all works
+
+I'll upload a video of this for better demonstration
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
