@@ -2,13 +2,13 @@
 
 Hi there! My name is Tony Lau and I am super excited you are checking my repository out for this NFT project.
 
-First and foremost - credits! I was able to do this with the help of tutorials (LearnWeb3Dao), Brainstation guidance from Sandun and John, and a bunch of really awesome open-sourced libraries.
+First and foremost - credits! I was able to do this with the help of the Conflux Developer Workshop, tutorials (LearnWeb3Dao), Brainstation guidance from Sandun and John, and a bunch of really awesome open-sourced libraries.
 
-The open sourced libraries I used are listed in my package.json file under dependencies.
+The open sourced libraries I used are listed in my package.json file under dependencies. I would highly recommend Web3 developers check out Learn Web 3 (https://learnweb3.io/)
 
 # The Why
 
-When I was at Shopify, I was intrigued with operating my own online ecommerce store. That is how I got involved with beefinthecity.ca. In between exchanging emails with customers, driving all-over Ontario for deliveries/sourcing high-quality meat, I soon became very appreciative of the customers that supported me for all the early hiccups and believing in my product. What I realized was that these customers let me be in the game - I was a small business owner and their vote of confidence allowed me to purchase products at wholesale prices, purchase meat in sustainable manner (a cow doesn't just have ribeye), order dry ice in bulk, get preferable rates from logistic companies, order packaging/insulation, etc. At one point, I understood the drive and mindset that entrepeneurs have to make their business grow - I wanted to make money so that I had the capital to make the product/operations even better. I wasn't satisfied with the insulation, the logistics, the delay between order/delivery, etc. When I was thinking of how to reward my early customers, I didn't like the engagement of giving discount codes and some of the loyalty programs out there that just wasn't that great. The points accumulated generally just led to another discount code to be applied on checkout. I also was extremely interested in blockchain. Having a background in finance, and also being a merchant, I recognized how costly it was to transact. There are SIGNIFICANT cuts taken when you add in network interchange fees, platform fees, stripe fees, monthly commercial bank fees, wire transfer fees, e-transfer fees, etc. Blockchain was an alternative.
+When I was at Shopify, I was intrigued with operating my own online ecommerce store. That is how I got involved with beefinthecity.ca - my own Shopify store. In between exchanging emails with customers, driving all-over Ontario for deliveries/sourcing high-quality meat, I soon became very appreciative of the customers that supported me for all the early hiccups and believing in my product. What I realized was that these customers let me be in the game - I was a small business owner and their vote of confidence allowed me to purchase products at wholesale prices, purchase meat in sustainable manner (a cow doesn't just have ribeye), order dry ice in bulk, get preferable rates from logistic companies, order packaging/insulation, etc. At one point, I understood the drive and mindset that entrepeneurs have to make their business grow - I wanted to make money so that I had the capital to make the product/operations even better. I wasn't satisfied with the insulation, the logistics, the delay between order/delivery, etc. When I was thinking of how to reward my early customers, I didn't like the engagement of giving discount codes and some of the loyalty programs out there that just wasn't that great. The points accumulated generally just led to another discount code to be applied on checkout. I also was extremely interested in blockchain. Having a background in finance, and also being a merchant, I recognized how costly it was to transact. There are SIGNIFICANT cuts taken when you add in network interchange fees, platform fees, stripe fees, monthly commercial bank fees, wire transfer fees, e-transfer fees, etc. Blockchain was an alternative.
 
 # The Product
 
@@ -27,7 +27,6 @@ For post-purchase, if a concert was cancelled, even if the ticket was re-sold, I
 # How this all works
 
 I'll upload a video of this for better demonstration
-
 
 # Getting Started with Create React App
 
