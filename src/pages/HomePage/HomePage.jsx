@@ -151,11 +151,12 @@ function HomePage() {
                 return (
                     <>
                         <div className="content__container">
-                            <h3 className="content__container--header"> {numberOfWhitelisted} / {maxNumberOfWhitelisted} have joined. We are maxing early access tickets at {maxNumberOfWhitelisted}  </h3>
+                            <h3 className="content__container--header"> You are a Raptors VIP! Thanks for joining! You have early access to ticket sales </h3>
                         </div>
                         <div className="content__container">
-                            <h3 className="content__container--text"> Thanks for joining! We look forward to launching </h3>
+                            <h3 className="content__container--text"> {numberOfWhitelisted} / {maxNumberOfWhitelisted} have joined. We are maxing early access tickets at {maxNumberOfWhitelisted}  </h3>
                         </div>
+
 
                     </>
                 );

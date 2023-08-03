@@ -7,6 +7,7 @@ import BuyTickets from './pages/BuyTickets/BuyTickets';
 import Tickets from './pages/Tickets/Tickets';
 import forcePageReload from './utils/forcePageReload';
 import Shop from './pages/Shop/Shop';
+import Owners from './pages/Owners/Owners';
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
          <Route path="/" element={<HomePage reloadPage={forcePageReload} />} />
          <Route path="/buy-tickets" element={<BuyTickets />} />
          <Route path="/tickets" element={<Tickets reloadPage={forcePageReload} />} />
+         <Route path="/owner" element={<Owners reloadPage={forcePageReload} />} />
          <Route path="/shop" element={<Shop reloadPage={forcePageReload} />} />
          <Route path="*" element={<NotFoundPage />} />
        </Routes>

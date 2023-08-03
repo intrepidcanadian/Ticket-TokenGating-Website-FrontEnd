@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import Web3Modal from "web3modal";
 import { NFT_CONTRACT_ABI, NFT_CONTRACT_ADDRESS } from "../../constants";
 import { Contract, parseEther } from "ethers";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ethers = require("ethers")
 
 function MintingButton() {
@@ -68,7 +71,7 @@ function MintingButton() {
             const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
             // call the presaleMint from the contract, only whitelisted addresses would be able to mint
             const tx = await nftContract.presaleMint({
-                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // value signifies the cost of one ticket which is "10" eth.
                 // We are parsing `0.01` string to ether using the utils library from ethers.js
                 value: parseEther("10"),
             });
@@ -77,6 +80,7 @@ function MintingButton() {
             await tx.wait();
             setLoading(false);
             window.alert("You successfully purchased a Raptors Playoff Ticket!");
+            
         } catch (err) {
             console.error(err);
         }
@@ -92,9 +96,8 @@ function MintingButton() {
             // Create a new instance of the Contract with a Signer, which allows
             // update methods
             const nftContract = new Contract(NFT_CONTRACT_ADDRESS, NFT_CONTRACT_ABI, signer);
-            // call the mint from the contract to mint the Crypto Dev
             const tx = await nftContract.mint({
-                // value signifies the cost of one crypto dev which is "0.01" eth.
+                // value signifies the cost of one raptors ticket which is "10" eth.
                 // We are parsing `0.01` string to ether using the utils library from ethers.js
                 value: parseEther("10"),
             });
@@ -102,7 +105,10 @@ function MintingButton() {
             // wait for the transaction to get mined
             await tx.wait();
             setLoading(false);
+
             window.alert("You successfully purchased a Raptors Playoff Ticket!");
+            
+            
         } catch (err) {
             console.error(err);
         }
@@ -311,7 +317,7 @@ function MintingButton() {
         // If we are currently waiting for something, return a loading button
         if (loading) {
             return (<>
-                Loading...
+            <div className = "loadingcontainer--text">Loading...</div>
             </>)
         }
 
@@ -346,7 +352,7 @@ function MintingButton() {
                     </div>
                     <div className = "button__container--text">Tickets On Early Access Sale: ${price}</div>
                     <button onClick={presaleMint} className="button">
-                        Early Access - Buy Ticket 🚀
+                        Early Access - Buy Ticket
                     </button>
                 </div>
             );
@@ -361,7 +367,7 @@ function MintingButton() {
                     <div className="button__container">
                         <div className = "button__container--text">Tickets On Sale: ${price} </div>
                         <button onClick={publicMint} className="button">
-                            Buy Ticket 🚀
+                            Buy Ticket 
                         </button>
                     </div>
                 </>

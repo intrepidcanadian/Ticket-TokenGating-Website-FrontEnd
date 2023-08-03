@@ -33,7 +33,7 @@ export default function Header() {
             className="header__link"
             onClick={() => handleNavLinkClick("/")}
           >
-            Join the Raptors VIP List
+            <p className = "header__link--title">Join the Raptors VIP List</p>
           </NavLink>
         </div>
         <div className="header__link-container">
@@ -42,7 +42,7 @@ export default function Header() {
             className="header__link"
             onClick={() => handleNavLinkClick("/buy-tickets")}
           >
-            Purchase Tickets
+           <p className = "header__link--title"> Purchase Tickets </p>
           </NavLink>
         </div>
         <div className="header__link-container">
@@ -51,16 +51,26 @@ export default function Header() {
             className="header__link"
             onClick={() => handleNavLinkClick("/tickets")}
           >
-            View Your Ticket
+            <p className = "header__link--title"> Ticket You Own </p>
           </NavLink>
         </div>
+        <div className="header__link-container">
+          <NavLink
+            to="/owner"
+            className="header__link"
+            onClick={() => handleNavLinkClick("/owners")}
+          >
+            <p className = "header__link--title"> Our Ticket Owners </p>
+          </NavLink>
+        </div>
+        
         <div className="header__link-container">
           <NavLink
             to="/shop"
             className="header__link"
             onClick={() => handleNavLinkClick("/shop")}
           >
-            Merch Available Only for Ticket Owners
+            <p className = "header__link--title"> Merch Available </p>
           </NavLink>
         </div>
         <div className="header__link-container">

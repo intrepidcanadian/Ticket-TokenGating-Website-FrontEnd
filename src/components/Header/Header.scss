@@ -24,6 +24,7 @@
     padding-bottom: 5.5rem;
     padding-left: 1rem;
     padding-right: 1rem;
+
   }
 
   &__link-container {
@@ -37,6 +38,7 @@
     &:hover {
       background-color: #13182c;
       border-radius: 1.25rem;
+      
        }
   }
 
@@ -47,11 +49,10 @@
     display: flex;
 
     &:hover {
-    color:white;
+      font-color: gold;
        }
 
   }
-
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -66,11 +67,14 @@
     &__links {
       width: auto;
       padding: 0;
+      
     }
 
     &__link {
       justify-content: center;
       display: flex;
+      font-size: 1rem;
+      color: white;
     }
 
     &__link-container {
@@ -98,7 +102,24 @@
     }
 
     &__logo-container {
-      margin-right: 43rem;
+      margin-right: 20rem;
     }
   }
 }
+
+.header__link--title {
+
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1.2rem;
+  text-align: center;
+  
+  &:hover {
+    color: gold;
+
+     }
+  
+  }

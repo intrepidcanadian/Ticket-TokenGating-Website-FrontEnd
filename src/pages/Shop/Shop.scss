@@ -9,18 +9,30 @@
 
     display: flex;
     width:100%;
+    text-align: center;
+    justify-content: center;
+    border-bottom: 1px solid black;
+    
 }
 
 .appbody__container--price{
 
     display: flex;
     width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
 }
 
 .appbody__container--discountprice{
 
     display: flex;
     width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid black;
 }
 
 .appbody__container--productstitle {
@@ -41,4 +53,11 @@
     border-radius: 2rem;
     display: flex;
     flex-direction: row;
+}
+
+.raptorsbadge {
+
+    position: absolute;
+    top: 100%;
+    left: 55%;
 }

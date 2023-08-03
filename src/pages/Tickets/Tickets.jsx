@@ -145,9 +145,9 @@ export default function Tickets() {
 
                     {tickets.map(ticket => (
                         <div key={ticket.id}>
-                            This is a ticket {ticket.id}
+                            {/* This is a ticket {ticket.id}
                             {ownedTicketIds}
-                            {ownedTicketIds.includes(ticket.id) ? "True" : "False"}
+                            {ownedTicketIds.includes(ticket.id) ? "True" : "False"} */}
                              {ownedTicketIds.includes(ticket.id) &&  (
                             <div className="appbody__mastercontainer">
                                 <div className="appbody__container">
@@ -155,7 +155,7 @@ export default function Tickets() {
                                         <img className="appbody__imgcontainer--image" src={ticket.image} alt={ticket.eventname} />
                                         <div className="appbody__imgcontainer--overlay">
                                             <p className="appbody__imgcontainer--textartist">{ticket.artist}</p>
-                                            <p className="appbody__imgcontainer--text">{ticket.seat}</p>
+                                            <p className="appbody__imgcontainer--text">Seat #: {ticket.seat}</p>
                                         </div>
                                     </div>
                                     <p className="appbody__container--info">{ticket.eventname}</p>
