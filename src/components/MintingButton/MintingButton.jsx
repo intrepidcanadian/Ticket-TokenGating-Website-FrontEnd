@@ -350,7 +350,7 @@ function MintingButton() {
                     <div>
                         Presale has started for the Raptors & Lakers Championship Game! If you are Raptors VIP, you will be eligilbe to purchase a ticket! 🥳
                     </div>
-                    <div className = "button__container--text">Tickets On Early Access Sale: ${price}</div>
+                    <div className = "button__container--text">Tickets On Early Access Sale: {price} CFX</div>
                     <button onClick={presaleMint} className="button">
                         Early Access - Buy Ticket
                     </button>
@@ -365,7 +365,7 @@ function MintingButton() {
             return (
                 <>
                     <div className="button__container">
-                        <div className = "button__container--text">Tickets On Sale: ${price} </div>
+                        <div className = "button__container--text">Tickets On Sale: {price} CFX </div>
                         <button onClick={publicMint} className="button">
                             Buy Ticket 
                         </button>
